@@ -126,6 +126,7 @@ const main = async () => {
   const verbose = process.argv.hasOwnProperty(2);
   const { fullName, appName } = await getNamesFromGit();
 
+  console.log("fullName:", fullName);
   /* Get Heroku authentication token from the Heroku CLI. */
   const herokuTokenOut = await getOutputFromCommand("heroku", ["auth:token"]);
   const herokuTokenStr = herokuTokenOut.toString("utf-8");
@@ -134,10 +135,14 @@ const main = async () => {
 
   /* Download the repo's public key supplied by Travis. */
   const travisURL = `https://api.travis-ci.org/repos/${fullName}/key`;
+  console.log("travisURL:", travisURL);
+
   const travisResponse = await axios.get(travisURL);
   const key = travisResponse.data.key;
   const keyBuffer = Buffer.from(key, "utf-8");
   if (verbose) console.log("Received Travis pubkey:\n", keyBuffer.toString());
+
+  console.log("haaaasidfaosdf");
 
   /* Write files for use with openssl */
   fs.writeFileSync(".tmp.key.pem", key);
